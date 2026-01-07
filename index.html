@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase completa de TypeScript</title>
+
+  <!-- TypeScript Compiler -->
+  <script src="https://cdn.jsdelivr.net/npm/typescript@5.9.2/lib/typescript.js"></script>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const tsCode = document.querySelector("#ts")?.textContent ?? "";
+      const jsCode = ts.transpile(tsCode, {
+        target: ts.ScriptTarget.ESNext,
+        module: ts.ModuleKind.ESNext
+      });
+
+      try {
+        eval(jsCode);
+      } catch (err) {
+        console.error("Error ejecutando JS transpileado:", err);
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f4f6f8;
+      color: #111;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    h1, h2 {
+      color: #1e40af;
+    }
+
+    section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+    }
+
+    code {
+      background: #020617;
+      color: #e5e7eb;
+      padding: .2em .4em;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>TypeScript: JavaScript con garantías</h1>
+
+<p>
+  TypeScript es un superset de JavaScript que agrega un
+  <strong>sistema de tipos estático</strong>.
+  Todo lo que se ve aquí se elimina antes de ejecutarse.
+</p>
+
+<section>
+  <h2>1. Tipos primitivos e inferencia</h2>
+  <p>
+    TypeScript puede inferir tipos automáticamente.
+  Si el valor cambia de tipo, aparece un error en desarrollo.
+  </p>
+</section>
+
+<section>
+  <h2>2. Interfaces</h2>
+  <p>
+    Una interfaz describe la forma de un objeto.
+    No existe en tiempo de ejecución.
+  </p>
+</section>
+
+<section>
+  <h2>3. Type aliases y uniones</h2>
+  <p>
+    Permiten crear tipos personalizados y combinarlos.
+  </p>
+</section>
+
+<section>
+  <h2>4. Funciones tipadas</h2>
+  <p>
+    Las funciones también se validan antes de ejecutarse.
+  </p>
+</section>
+
+<section>
+  <h2>5. Genéricos (introducción)</h2>
+  <p>
+    Los genéricos permiten escribir funciones reutilizables
+    sin perder información de tipos.
+  </p>
+</section>
+
+<section>
+  <h2>6. Narrowing</h2>
+  <p>
+    TypeScript analiza el flujo del código para saber
+    qué tipo tiene una variable en cada rama.
+  </p>
+</section>
+
+<script id="ts" type="text/typescript">
+
+/* =========================
+   1. TIPOS E INFERENCIA
+========================= */
+
+let mensaje = "Hola TypeScript";
+// mensaje = 123 ❌
+
+// =========================
+// 2. INTERFACES
+// =========================
+
+interface Usuario {
+  nombre: string;
+  edad: number;
+  activo: boolean;
+}
+
+const user: Usuario = {
+  nombre: "Agustín",
+  edad: 28,
+  activo: true
+};
+
+console.log("Usuario:", user);
+
+/* =========================
+   3. TYPE ALIASES Y UNIONES
+========================= */
+
+type ID = number | string;
+
+let userId: ID;
+userId = 123;
+userId = "abc-123";
+
+/* =========================
+   4. FUNCIONES TIPADAS
+========================= */
+
+function saludar(nombre: string): string {
+  return `Hola ${nombre}`;
+}
+
+console.log(saludar("Miguel"));
+
+/* =========================
+   5. GENÉRICOS
+========================= */
+
+function identidad<T>(valor: T): T {
+  return valor;
+}
+
+console.log(identidad<number>(42));
+console.log(identidad<string>("TypeScript"));
+
+/* =========================
+   6. NARROWING
+========================= */
+
+function imprimir(valor: string | number) {
+  if (typeof valor === "string") {
+    console.log("Texto:", valor.toUpperCase());
+  } else {
+    console.log("Número:", valor.toFixed(2));
+  }
+}
+
+imprimir("hola");
+imprimir(3.1416);
+
+/* =========================
+   7. TS DESAPARECE
+========================= */
+
+// Todo lo anterior se elimina.
+// El navegador solo ve JavaScript.
+
+document.body.insertAdjacentHTML(
+  "beforeend",
+  `<p><strong>TypeScript compilado correctamente.</strong></p>`
+);
+
+</script>
+
+</body>
+</html>
